@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brutal3D</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #222;
+  }
+
+  header {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 40px 20px 20px 20px;
+    text-align: center;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 2.8rem;
+  }
+
+  header p {
+    margin: 10px 0 0 0;
+    font-size: 1.2rem;
+    color: #ccc;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+
+  .download-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    font-size: 1.3rem;
+    color: #fff;
+    background-color: #1a73e8;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 20px 0;
+    transition: all 0.2s ease;
+  }
+
+  .download-btn:hover {
+    background-color: #155ab6;
+    transform: translateY(-2px);
+  }
+
+  h2 {
+    margin-top: 60px;
+    font-size: 2rem;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 8px;
+  }
+
+  ul.features {
+    list-style: inside disc;
+    margin-top: 15px;
+    line-height: 1.8;
+    font-size: 1.1rem;
+  }
+
+  .carousel-wrapper {
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .carousel-container {
+    display: flex;
+    overflow-x: hidden;
+    gap: 15px;
+    scroll-behavior: smooth;
+  }
+
+  .carousel-container img {
+    height: 250px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .carousel-container img:hover {
+    transform: scale(1.05);
+  }
+
+  .carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    border: none;
+    font-size: 2rem;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s;
+    z-index: 2;
+  }
+
+  .carousel-btn:hover {
+    background-color: rgba(0,0,0,0.7);
+  }
+
+  .carousel-btn.left { left: 0; }
+  .carousel-btn.right { right: 0; }
+
+  /* Modal/Lightbox */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 2.5rem;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  footer {
+    background-color: #1a1a1a;
+    color: #fff;
+    padding: 25px;
+    text-align: center;
+    margin-top: 60px;
+    font-size: 0.95rem;
+  }
+
+  @media(max-width: 600px){
+    .carousel-container img { height: 180px; }
+    .download-btn { padding: 12px 28px; font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Brutal3D v0.2 Alpha</h1>
+    <p>Fast, customizable 3D cube renderer for Windows</p>
+  </header>
+
+  <main>
+    <a href="Brutal3D.zip" class="download-btn">Download Now</a>
+
+    <h2>Features</h2>
+    <ul class="features">
+      <li>Adjust cube speed and count</li>
+      <li>Customizable cube color and textures</li>
+      <li>MSAA anti-aliasing support</li>
+      <li>Resolution and screen mode selection</li>
+      <li>VSync and framerate cap options</li>
+      <li>Wireframe and debug overlay modes</li>
+      <li>Ultra-fast 3D rendering performance</li>
+    </ul>
+
+    <h2>Screenshots</h2>
+    <div class="carousel-wrapper">
+      <button class="carousel-btn left">&#10094;</button>
+      <div class="carousel-container">
+        <img src="screenshot1.png" alt="Options menu">
+        <img src="screenshot2.png" alt="Customization!!!">
+        <img src="screenshot3.png" alt="default options">
+      </div>
+      <button class="carousel-btn right">&#10095;</button>
+    </div>
+  </main>
+
+  <footer>
+    https://github.com/kroefer1/Brutal3D
+  </footer>
+
+  <!-- Modal / Lightbox -->
+  <div class="modal" id="lightbox">
+    <span class="modal-close" id="modalClose">&times;</span>
+    <img id="modalImg" src="" alt="Screenshot">
+  </div>
+
+<script>
+  const container = document.querySelector('.carousel-container');
+  const btnLeft = document.querySelector('.carousel-btn.left');
+  const btnRight = document.querySelector('.carousel-btn.right');
+
+  btnLeft.addEventListener('click', () => container.scrollBy({ left: -300, behavior: 'smooth' }));
+  btnRight.addEventListener('click', () => container.scrollBy({ left: 300, behavior: 'smooth' }));
+
+  // Modal/lightbox
+  const modal = document.getElementById('lightbox');
+  const modalImg = document.getElementById('modalImg');
+  const modalClose = document.getElementById('modalClose');
+
+  document.querySelectorAll('.carousel-container img').forEach(img => {
+    img.addEventListener('click', () => {
+      modal.style.display = 'flex';
+      modalImg.src = img.src;
+    });
+  });
+
+  modalClose.addEventListener('click', () => modal.style.display = 'none');
+  modal.addEventListener('click', e => {
+    if(e.target === modal) modal.style.display = 'none';
+  });
+</script>
+</body>
+</html>
