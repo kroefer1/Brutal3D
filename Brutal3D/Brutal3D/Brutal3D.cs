@@ -1,4 +1,4 @@
-﻿// Brutal3D - merged with requested features
+﻿// Brutal3D
 // Requires OpenTK 4.x and System.Drawing.Common
 using System;
 using System.Collections.Generic;
@@ -845,3 +845,4 @@ namespace Brutal3D
         }
     }
 }
+
